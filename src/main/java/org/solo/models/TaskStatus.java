@@ -1,2 +1,8 @@
-package org.solo.models;public enum TaskStatus {
+package org.solo.models;
+
+public enum TaskStatus {
+    PENDING,
+    IN_PROGRESS,
+    COMPLETE;
+
 }

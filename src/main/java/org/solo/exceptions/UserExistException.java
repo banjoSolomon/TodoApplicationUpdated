@@ -1,2 +1,8 @@
-package org.solo.exceptions;public class UserAlradyExistException {
+package org.solo.exceptions;
+
+public class UserExistException extends RuntimeException {
+    public UserExistException(String message) {
+        super(message);
+    }
 }
+

@@ -1,2 +1,9 @@
-package org.solo.services;public interface TaskService {
+package org.solo.services;
+
+import org.solo.dto.TaskRequest;
+import org.solo.models.Task;
+
+public interface TaskService {
+    Task createTaskWith(TaskRequest taskRequest);
+
 }
