@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
         User fouundUser = findUserBy(startTaskRequest.getUsername());
         Task foundTask = taskService.findTaskById(startTaskRequest.getId());
         if(!fouundUser.getTasks().contains(foundTask))
-            throw new TaskNotFoundForUserException(String.format("%s not found", startTaskRequest.getUsername()));
+            throw new TaskNotFoundForUserException(String.format("%s not found", startTaskRequest.getId()));
         foundTask.setStatus(TaskStatus.IN_PROGRESS);
         foundTask.setStartTime(LocalDateTime.now());
         taskService.updateTask(foundTask);
