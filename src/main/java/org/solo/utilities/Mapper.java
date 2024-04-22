@@ -53,6 +53,7 @@ public class Mapper {
     }
     public static StartTaskResponse startResponseMap(Task task){
        StartTaskResponse startTaskResponse= new StartTaskResponse();
+       startTaskResponse.setTitle(task.getTitle());
         startTaskResponse.setId(task.getId());
         startTaskResponse.setStatus(TaskStatus.IN_PROGRESS);
         startTaskResponse.setStartTime(DateTimeFormatter
