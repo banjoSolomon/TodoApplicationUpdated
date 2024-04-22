@@ -2,6 +2,7 @@ package org.solo.controllers;
 
 import org.solo.dto.LoginRequest;
 import org.solo.dto.RegisterRequest;
+import org.solo.dto.StartTaskRequest;
 import org.solo.dto.TaskRequest;
 import org.solo.response.ApiResponse;
 import org.solo.services.UserService;
@@ -41,6 +42,15 @@ public class UserController {
     public ResponseEntity<?> createTask(@RequestBody TaskRequest request){
         try{
             var result = userService.createTask(request);
+            return new ResponseEntity<>(new ApiResponse(true, result), CREATED);
+        }catch(Exception e){
+            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), BAD_REQUEST);
+        }
+    }
+    @PostMapping("/start-Task")
+    public ResponseEntity<?> startTask(@RequestBody StartTaskRequest request){
+        try{
+            var result = userService.startTask(request);
             return new ResponseEntity<>(new ApiResponse(true, result), CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), BAD_REQUEST);
