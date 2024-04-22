@@ -2,16 +2,21 @@ package org.solo.services;
 
 import org.solo.dto.LoginRequest;
 import org.solo.dto.RegisterRequest;
+import org.solo.dto.StartTaskRequest;
 import org.solo.dto.TaskRequest;
 import org.solo.exceptions.*;
 import org.solo.models.Task;
+import org.solo.models.TaskStatus;
 import org.solo.models.User;
 import org.solo.repository.Users;
 import org.solo.response.LoginResponse;
 import org.solo.response.RegisterResponse;
+import org.solo.response.StartTaskResponse;
 import org.solo.response.TaskResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 import static org.solo.utilities.Mapper.*;
 
@@ -49,6 +54,18 @@ public class UserServiceImpl implements UserService{
         foundUser.getTasks().add(newTask);
         users.save(foundUser);
         return taskResponseMap(newTask);
+    }
+
+    @Override
+    public StartTaskResponse startTask(StartTaskRequest startTaskRequest) {
+        User fouundUser = findUserBy(startTaskRequest.getUsername());
+        Task foundTask = taskService.findTaskById(startTaskRequest.getId());
+        if(!fouundUser.getTasks().contains(foundTask))
+            throw new TaskNotFoundForUserException(String.format("%s not found", startTaskRequest.getUsername()));
+        foundTask.setStatus(TaskStatus.IN_PROGRESS);
+        foundTask.setStartTime(LocalDateTime.now());
+        taskService.updateTask(foundTask);
+        return startResponseMap(foundTask);
     }
 
     private boolean taskExistsForUser(User foundUser, String title) {

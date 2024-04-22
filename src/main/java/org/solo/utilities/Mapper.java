@@ -7,6 +7,7 @@ import org.solo.models.TaskStatus;
 import org.solo.models.User;
 import org.solo.response.LoginResponse;
 import org.solo.response.RegisterResponse;
+import org.solo.response.StartTaskResponse;
 import org.solo.response.TaskResponse;
 
 import java.time.format.DateTimeFormatter;
@@ -49,6 +50,14 @@ public class Mapper {
         task.setTitle(taskRequest.getTitle());
         task.setStatus(TaskStatus.PENDING);
         return task;
+    }
+    public static StartTaskResponse startResponseMap(Task task){
+       StartTaskResponse startTaskResponse= new StartTaskResponse();
+        startTaskResponse.setId(task.getId());
+        startTaskResponse.setStatus(TaskStatus.IN_PROGRESS);
+        startTaskResponse.setStartTime(DateTimeFormatter
+                .ofPattern("dd/MMM/yyyy 'at' HH:mm:ss a").format(task.getStartTime()));
+        return startTaskResponse;
 
     }
 }

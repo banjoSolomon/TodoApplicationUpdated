@@ -17,4 +17,15 @@ public class TaskServiceImpl implements TaskService{
         Task task = taskMap(taskRequest);
         return taskRepository.save(task);
     }
+
+    @Override
+    public Task findTaskById(String id) {
+        return taskRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateTask(Task foundTask) {
+        taskRepository.save(foundTask);
+
+    }
 }

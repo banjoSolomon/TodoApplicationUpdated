@@ -12,4 +12,5 @@ public class Task {
     private TaskStatus status;
     private LocalDateTime dateCreated = LocalDateTime.now();
     private LocalDateTime dateUpdated = LocalDateTime.now();
+    private LocalDateTime startTime;
 }

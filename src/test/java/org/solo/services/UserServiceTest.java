@@ -4,9 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.solo.dto.LoginRequest;
 import org.solo.dto.RegisterRequest;
+import org.solo.dto.StartTaskRequest;
 import org.solo.dto.TaskRequest;
 import org.solo.exceptions.InvalidUsernameOrPasswordException;
 import org.solo.exceptions.UserExistException;
+import org.solo.models.Task;
 import org.solo.models.TaskStatus;
 import org.solo.repository.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,12 @@ public class UserServiceTest {
     private Users users;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TaskService taskService;
     private RegisterRequest registerRequest;
     private LoginRequest loginRequest;
     private TaskRequest taskRequest;
+    private StartTaskRequest startTaskRequest;
     @BeforeEach
     public void setUp(){
         users.deleteAll();
@@ -40,6 +45,10 @@ public class UserServiceTest {
         taskRequest = new TaskRequest();
         taskRequest.setUsername("username");
         taskRequest.setTitle("title");
+
+        startTaskRequest = new StartTaskRequest();
+        startTaskRequest.setUsername("username");
+        startTaskRequest.setId("id");
 
 
     }
@@ -97,24 +106,28 @@ public class UserServiceTest {
         assertThat(checkUser.getTasks().size(), is(0));
         taskRequest.setUsername("username");
         taskRequest.setTitle("title");
-        var todolistResponse = userService.createTask(taskRequest);
+        var taskResponse = userService.createTask(taskRequest);
         var foundUser = users.findByUsername(registerRequest.getUsername().toLowerCase());
         assertThat(foundUser.getTasks().size(), is(1));
-        assertThat(todolistResponse.getId(), notNullValue());
-
-
-
-
-
-
-
-
-
+        assertThat(taskResponse.getId(), notNullValue());
 
     }
 
+    @Test
+    public void testUserCanStartTask(){
+        userService.register(registerRequest);
+        userService.login(loginRequest);
+        taskRequest.setUsername("username");
+        taskRequest.setTitle("title");
+        var taskResponse = userService.createTask(taskRequest);
+        String taskId = taskResponse.getId();
+        startTaskRequest.setUsername(registerRequest.getUsername());
+        startTaskRequest.setId(taskId);
+        userService.startTask(startTaskRequest);
+        var startedTask = taskService.findTaskById(taskId);
+        assertThat(startedTask.getStatus(), is(TaskStatus.IN_PROGRESS));
+        assertThat(startedTask.getStartTime(), notNullValue());
+    }
 
 
-
-
-}
+    }
