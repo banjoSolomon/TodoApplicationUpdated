@@ -68,6 +68,18 @@ public class UserServiceImpl implements UserService{
         return startResponseMap(foundTask);
     }
 
+    @Override
+    public void markTaskAsCompleted(StartTaskRequest startTaskRequest) {
+        User fouundUser = findUserBy(startTaskRequest.getUsername());
+        Task foundTask = taskService.findTaskById(startTaskRequest.getId());
+        if(!fouundUser.getTasks().contains(foundTask))
+            throw new TaskNotFoundForUserException(String.format("%s not found", startTaskRequest.getId()));
+        foundTask.setStatus(TaskStatus.COMPLETE);
+        foundTask.setEndTime(LocalDateTime.now());
+        taskService.updateTask(foundTask);
+
+    }
+
     private boolean taskExistsForUser(User foundUser, String title) {
         for(Task task : foundUser.getTasks())
             if(task.getTitle() != null && task.getTitle().equals(title))

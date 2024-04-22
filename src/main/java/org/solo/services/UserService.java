@@ -18,4 +18,6 @@ public interface UserService {
     TaskResponse createTask(TaskRequest taskRequest);
 
     StartTaskResponse startTask(StartTaskRequest startTaskRequest);
+
+    void markTaskAsCompleted(StartTaskRequest startTaskRequest);
 }

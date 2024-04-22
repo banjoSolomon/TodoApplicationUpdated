@@ -8,7 +8,6 @@ import org.solo.dto.StartTaskRequest;
 import org.solo.dto.TaskRequest;
 import org.solo.exceptions.InvalidUsernameOrPasswordException;
 import org.solo.exceptions.UserExistException;
-import org.solo.models.Task;
 import org.solo.models.TaskStatus;
 import org.solo.repository.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,6 +126,26 @@ public class UserServiceTest {
         var startedTask = taskService.findTaskById(taskId);
         assertThat(startedTask.getStatus(), is(TaskStatus.IN_PROGRESS));
         assertThat(startedTask.getStartTime(), notNullValue());
+    }
+    @Test
+    public void testUserMarkTaskAsCompleted(){
+        userService.register(registerRequest);
+        userService.login(loginRequest);
+        taskRequest.setUsername("username");
+        taskRequest.setTitle("title");
+        var taskResponse = userService.createTask(taskRequest);
+        String taskId = taskResponse.getId();
+        startTaskRequest.setUsername(registerRequest.getUsername());
+        startTaskRequest.setId(taskId);
+        userService.startTask(startTaskRequest);
+        var startedTask = taskService.findTaskById(taskId);
+        assertThat(startedTask.getStatus(), is(TaskStatus.IN_PROGRESS));
+        assertThat(startedTask.getStartTime(), notNullValue());
+        userService.markTaskAsCompleted(startTaskRequest);
+        var completedTask = taskService.findTaskById(taskId);
+        assertThat(completedTask.getStatus(), is(TaskStatus.COMPLETE));
+        assertThat(completedTask.getEndTime(), notNullValue());
+
     }
 
 
