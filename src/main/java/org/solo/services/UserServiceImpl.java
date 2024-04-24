@@ -1,9 +1,6 @@
 package org.solo.services;
 
-import org.solo.dto.LoginRequest;
-import org.solo.dto.RegisterRequest;
-import org.solo.dto.StartTaskRequest;
-import org.solo.dto.TaskRequest;
+import org.solo.dto.*;
 import org.solo.exceptions.*;
 import org.solo.models.Task;
 import org.solo.models.TaskStatus;
@@ -69,11 +66,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void markTaskAsCompleted(StartTaskRequest startTaskRequest) {
-        User fouundUser = findUserBy(startTaskRequest.getUsername());
-        Task foundTask = taskService.findTaskById(startTaskRequest.getId());
+    public void markTaskAsCompleted(MarkTaskRequest markTaskRequest) {
+        User fouundUser = findUserBy(markTaskRequest.getUsername());
+        Task foundTask = taskService.findTaskById(markTaskRequest.getId());
         if(!fouundUser.getTasks().contains(foundTask))
-            throw new TaskNotFoundForUserException(String.format("%s not found", startTaskRequest.getId()));
+            throw new TaskNotFoundForUserException(String.format("%s not found", markTaskRequest.getId()));
         foundTask.setStatus(TaskStatus.COMPLETE);
         foundTask.setEndTime(LocalDateTime.now());
         taskService.updateTask(foundTask);

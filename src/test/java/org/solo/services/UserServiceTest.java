@@ -2,10 +2,7 @@ package org.solo.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.solo.dto.LoginRequest;
-import org.solo.dto.RegisterRequest;
-import org.solo.dto.StartTaskRequest;
-import org.solo.dto.TaskRequest;
+import org.solo.dto.*;
 import org.solo.exceptions.InvalidUsernameOrPasswordException;
 import org.solo.exceptions.UserExistException;
 import org.solo.models.TaskStatus;
@@ -29,6 +26,7 @@ public class UserServiceTest {
     private LoginRequest loginRequest;
     private TaskRequest taskRequest;
     private StartTaskRequest startTaskRequest;
+    private MarkTaskRequest markTaskRequest;
     @BeforeEach
     public void setUp(){
         users.deleteAll();
@@ -141,7 +139,7 @@ public class UserServiceTest {
         var startedTask = taskService.findTaskById(taskId);
         assertThat(startedTask.getStatus(), is(TaskStatus.IN_PROGRESS));
         assertThat(startedTask.getStartTime(), notNullValue());
-        userService.markTaskAsCompleted(startTaskRequest);
+        userService.markTaskAsCompleted(markTaskRequest);
         var completedTask = taskService.findTaskById(taskId);
         assertThat(completedTask.getStatus(), is(TaskStatus.COMPLETE));
         assertThat(completedTask.getEndTime(), notNullValue());
