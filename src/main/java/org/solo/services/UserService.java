@@ -1,10 +1,7 @@
 package org.solo.services;
 
 import org.solo.dto.*;
-import org.solo.response.LoginResponse;
-import org.solo.response.RegisterResponse;
-import org.solo.response.StartTaskResponse;
-import org.solo.response.TaskResponse;
+import org.solo.response.*;
 
 public interface UserService {
 
@@ -16,5 +13,5 @@ public interface UserService {
 
     StartTaskResponse startTask(StartTaskRequest startTaskRequest);
 
-    void markTaskAsCompleted(MarkTaskRequest markTaskRequest);
+    MarkTaskResponse markTaskAsCompleted(MarkTaskRequest markTaskRequest);
 }

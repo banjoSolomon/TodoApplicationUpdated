@@ -47,6 +47,11 @@ public class UserServiceTest {
         startTaskRequest.setUsername("username");
         startTaskRequest.setId("id");
 
+        markTaskRequest = new MarkTaskRequest();
+        markTaskRequest.setUsername("username");
+        markTaskRequest.setId("id");
+
+
 
     }
 

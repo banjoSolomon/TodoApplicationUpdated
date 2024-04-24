@@ -5,10 +5,7 @@ import org.solo.dto.TaskRequest;
 import org.solo.models.Task;
 import org.solo.models.TaskStatus;
 import org.solo.models.User;
-import org.solo.response.LoginResponse;
-import org.solo.response.RegisterResponse;
-import org.solo.response.StartTaskResponse;
-import org.solo.response.TaskResponse;
+import org.solo.response.*;
 
 import java.time.format.DateTimeFormatter;
 
@@ -59,6 +56,17 @@ public class Mapper {
         startTaskResponse.setStartTime(DateTimeFormatter
                 .ofPattern("dd/MMM/yyyy 'at' HH:mm:ss a").format(task.getStartTime()));
         return startTaskResponse;
+
+    }
+
+    public static MarkTaskResponse markTaskResponse(Task task){
+        MarkTaskResponse markTaskResponse= new MarkTaskResponse();
+        markTaskResponse.setTitle(task.getTitle());
+        markTaskResponse.setId(task.getId());
+        markTaskResponse.setStatus(TaskStatus.COMPLETE);
+        markTaskResponse.setEndTime(DateTimeFormatter
+                .ofPattern("dd/MMM/yyyy 'at' HH:mm:ss a").format(task.getEndTime()));
+        return markTaskResponse;
 
     }
 }

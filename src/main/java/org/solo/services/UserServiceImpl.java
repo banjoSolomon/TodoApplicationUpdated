@@ -6,10 +6,7 @@ import org.solo.models.Task;
 import org.solo.models.TaskStatus;
 import org.solo.models.User;
 import org.solo.repository.Users;
-import org.solo.response.LoginResponse;
-import org.solo.response.RegisterResponse;
-import org.solo.response.StartTaskResponse;
-import org.solo.response.TaskResponse;
+import org.solo.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +63,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void markTaskAsCompleted(MarkTaskRequest markTaskRequest) {
+    public MarkTaskResponse markTaskAsCompleted(MarkTaskRequest markTaskRequest) {
         User fouundUser = findUserBy(markTaskRequest.getUsername());
         Task foundTask = taskService.findTaskById(markTaskRequest.getId());
         if(!fouundUser.getTasks().contains(foundTask))
@@ -74,6 +71,7 @@ public class UserServiceImpl implements UserService{
         foundTask.setStatus(TaskStatus.COMPLETE);
         foundTask.setEndTime(LocalDateTime.now());
         taskService.updateTask(foundTask);
+        return markTaskResponse(foundTask);
 
     }
 
